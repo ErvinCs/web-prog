@@ -403,19 +403,11 @@ fabric.properties
 .history
 
 ### Web ###
-*.asp
 *.cer
 *.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
 *.rss
 *.wasm
 *.wat
-*.xhtml
 
 ### WebStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
