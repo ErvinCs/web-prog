@@ -128,8 +128,8 @@ svg:not(:root).svg-inline-fa {
 	color: #FFF;
 	margin-left: auto;
 	margin-right: auto;
-	padding-left: 0px;
-	padding-right: 0px;
+	padding-left: 15px;
+	padding-right: 15px;
 	max-width: 1170px;
 }
 
@@ -156,11 +156,11 @@ svg:not(:root).svg-inline-fa {
 	text-align: center;
 }
 
-.banner-icon {
+.main-widget .banner-links .banner-icon {
 	font-size: 32px;
 	padding-right: 10px;
-
-	color: #FFF;
+	vertical-align: middle;
+	
 }
 
 .home {
@@ -249,7 +249,6 @@ ol, ul {
 	text-align: right;
 }
 
-/*.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, */
 .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
 	width: 100%;
 	box-sizing: border-box;
@@ -297,7 +296,6 @@ ol, ul {
 }
 
 .slick-prev, .slick-next {
-	
 	font-size: 0;
 	line-height: 0;
 	position: absolute;
@@ -317,7 +315,27 @@ ol, ul {
 	z-index: 999;
 	box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
 	-webkit-box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
-	height: 11%; width:2.7%
+	height: 11%; width:2.7%;
+}
+
+.slick-prev::before {
+	content: url(https://www.tutorialspoint.com/videotutorials/images/prev.png);
+	font-family: 'slick';
+	font-size: 26px;
+	line-height: 1;
+	opacity: .75;
+	color: #333;
+} 
+
+.slick-next::before {
+	font-family: 'slick';
+	font-size: 26px;
+	line-height: 1;
+	opacity: .75;
+	color: #333;
+    content: url(https://www.tutorialspoint.com/videotutorials/images/next.png);
+}
+
 }
 
 [type="button"], button {
