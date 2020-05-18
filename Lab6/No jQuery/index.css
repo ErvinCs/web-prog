@@ -4,17 +4,14 @@
 }
 
 .dialog {
-	/* Center on the screen*/
-	/* TODO: Make it draggable so position proly should not be fixed, but updateable */
+	/* TODO: Make it draggable so position proly should not be fixed, but updateable; */
 	position: fixed; 
 	top: 50%;
 	left: 50%;
-	/* Set scale to 0 so the dialog cannot be seen */
-	/* Transition from scale 0 to scale 1 */
-	transform: translate(-50%, -50%) scale(0);	
-	
+	transform: translate(-50%, -50%) scale(0);	/* Set scale to 0 so the dialog cannot be seen*/
+												/* Using scale such that we can transition from scale 0 to scale 1*/
 	transition: 200ms ease-in-out;
-	
+	/*Code above centers it on the screen*/
 
 	border: 1px solid #000;
 	border-radius: 10px;
@@ -25,21 +22,19 @@
 }
 
 .dialog.active {
-	/* Show the dialog at full scale when active*/
-	transform: translate(-50%, -50%) scale(1); 
+	transform: translate(-50%, -50%) scale(1); /* Show the dialog when active*/
 }
 
 .dialog-header {
 	padding: 10px 15px;
-	/* Items in the header should be on the same line */
-	display: flex; 
+	display: flex; /* Items should be on the same line */
 	justify-content: space-between;
 	align-items: center;
 	border-bottom: 1px solid #000;
 }
 
 .dialog-header .dialog-title {
-	font-size: 1.25em;
+	font-size: 1.25rem;
 	font-weight: bold;
 }
 
@@ -49,7 +44,7 @@
 	border: none;
 	outline: none;
 	background: none;
-	font-size: 1.25em;
+	font-size: 1.25rem;
 	font-weight: bold;
 }
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>Keyboards</title>
+    <script src="lib/jquery-2.0.3.js"></script>
+    <script lang="javascript">
+
+        function showMice(mouseList) {
+            // For now just show whatever works
+            console.log(mouseList);
+            var table = "<table><thead><tr><td>ID</td><td>Name</td><td>Price</td></tr></thead>"; //<td>Category</td>
+            mouseList.forEach(item => {
+                mouse = item;
+                content +=   "<tr>";
+                content +=   "<td>" + mouse.id + "</td>" +
+                    "<td>" + mouse.name + "</td>" +
+                    "<td>" + mouse.price + "</td></tr>";  // "<td>" + mouse.category + </td>;
+            });
+
+            $("#main").html(table);
+        }
+
+        $(document).ready(function() {
+            $("#btn-getMice").click(function () {
+                $.getJSON(
+                    "controller/controller.php",
+                    {action: "getMice", page: $('#pagem').val()},
+                    showMice
+                );
+            });
+        });
+    </script>
+
+
+</head>
+
+<body>
+<section id="keyboards-section">
+    Mice:<br/>
+    <input type="button" id="btn-getMice" value="Get mice"/>
+    Page:
+    <input type="text" name="pagem" id="pagem"/>
+    <br/>
+</section>
+
+<hr/>
+
+<section id="main"></section>
+</body>
+</html>

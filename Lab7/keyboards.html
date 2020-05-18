@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <title>Keyboards</title>
+        <script src="lib/jquery-2.0.3.js"></script>
+        <script lang="javascript">
+
+            function showKeyboards(keyboardList) {
+                // For now just show whatever works
+                console.log(keyboardList);
+                var table = "<table><thead><tr><td>ID</td><td>Name</td><td>Price</td></tr></thead>"; //<td>Category</td>
+                keyboardList.forEach(item => {
+                   keyboard = item;
+                   content +=   "<tr>";
+                   content +=   "<td>" + keyboard.id + "</td>" +
+                                "<td>" + keyboard.name + "</td>" +
+                                "<td>" + keyboard.price + "</td></tr>";  // "<td>" + keyboard.category + </td>;
+                });
+
+                $("#main").html(table);
+            }
+
+            $(document).ready(function() {
+                $("#btn-getKeyboards").click(function () {
+                    $.getJSON(
+                        "controller/controller.php",
+                        {action: "getKeyboards", page: $('#pagek').val()},
+                        showKeyboards
+                    );
+                });
+            });
+        </script>
+
+
+    </head>
+
+    <body>
+        <section id="keyboards-section">
+            Keyboards:<br/>
+            <input type="button" id="btn-getKeyboards" value="Get keyboards"/>
+            Page:
+            <input type="text" name="pagek" id="pagek"/>
+            <br/>
+        </section>
+
+        <hr/>
+
+        <section id="main"></section>
+    </body>
+</html>
