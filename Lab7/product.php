@@ -13,24 +13,23 @@
         }
 
         public function getId() {
-            return $id;
+            return $this->id;
         }
 
         public function getName() {
-            return $name;
+            return $this->name;
         }
 
         public function getPrice() {
-            return $price;
+            return $this->price;
         }
 
         public function getCategory() {
-            return $category;
+            return $this->category;
         }
 
         public function jsonSerialize() {
-            $json = get_object_vars($this);
-            return $json;
+            return get_object_vars($this);
         }
 
     }

@@ -11,20 +11,19 @@
         }
 
         public function getId() {
-            return $id;
+            return $this->id;
         }
 
         public function getUsername() {
-            return $username;
+            return $this->username;
         }
 
         public function getPassword() {
-            return $password;
+            return $this->password;
         }
 
         public function jsonSerialize() {
-            $json = get_object_vars($this);
-            return $json;
+            return get_object_vars($this);
         }
     }
 ?>

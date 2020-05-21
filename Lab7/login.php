@@ -1,11 +1,8 @@
 <?php
-require_once 'controller/controller.php'
-require_once 'model/model.php'
-require_once 'model/user.php'
+require_once 'controller.php';
+require_once 'model.php';
+require_once 'user.php';
 
-//header('Content-Type: application/json; charset=UTF-8');
-
-// Start the session
 session_start();
 
 // Check if the user is already logged in and redirect him to index.php
@@ -39,9 +36,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err)) {
         $user = $controller->getUser($username, $password);
 
-        if ($user.getId() !== -1) {
-            $username = $user.getUsername();
-            $password = $user.getPassword();
+        if ($user->getId() !== -1) {
+            $username = $user->getUsername();
+            $password = $user->getPassword();
+            $id = $user->getId();
 
             session_start();
 
@@ -49,9 +47,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $_SESSION["loggedin"] = true;
             $_SESSION["id"] = $id;
             $_SESSION["username"] = $username;
+            $_SESSION["cart"] = array();
 
             // Redirect to index page
             header("Location: index.php");
+        } else {
+            // TODO: Show
+            header("Location: login.html");
         }
     }
 }

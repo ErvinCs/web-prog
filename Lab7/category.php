@@ -7,12 +7,11 @@
         }
 
         public function getCategory() {
-            return $category;
+            return $this->category;
         }
 
         public function jsonSerialize() {
-            $json = get_object_vars($this);
-            return $json;
+            return get_object_vars($this);
         }
     }
 

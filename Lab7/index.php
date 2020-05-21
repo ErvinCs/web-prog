@@ -1,12 +1,14 @@
 <?php
-// Initialize the session
+
+// Start the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
+// Check if the user is logged in, if not then redirect him to the login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("Location: login.html");
     exit;
 }
+$username = $_SESSION["username"];
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +19,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
     <div>
-        <h1>Welcome, <b><?php echo $_SESSION["username"]; ?></b></h1>
+        <!-- Why tho -->
+        <h1>Welcome <b><?php echo("$username"); ?></b></h1>
     </div>
     <p>
         <a href="logout.php">Sign Out</a>

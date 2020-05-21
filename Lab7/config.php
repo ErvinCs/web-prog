@@ -9,7 +9,9 @@
         public $pdo;
         public $error;
 
+        // TODO: Document this
         public function __construct () {
+            header("Access-Control-Allow-Origin: *");
             $dsn = "mysql:host=$this->host;dbname=$this->db;charset=$this->charset";
             $opt = array(PDO::ATTR_ERRMODE   => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -24,25 +26,27 @@
         }
 
         public function selectUser($username, $password) {
-            $stmt = $this->pdo->query("SELECT 1 FROM users WHERE username=:username AND password=:password");
-            $stmt->execute(['username' => $username, 'password' => $password])
+            $stmt = $this->pdo->query("SELECT 1 FROM users WHERE username='".$username."' AND password='".$password."'");
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         public function selectKeyboardsPage($page) {
-            $pageBegin = $page;
-            $pageEnd = $page + 4;
-            $stmt = $this->pdo->query("SELECT * FROM products WHERE category=:category LIMIT :pageStart,:pageFinish")
-            $stmt->execute(['category' => 'keyboards', 'pageStart' => $pageBegin, 'pageFinish' =>$pageEnd])
+            $pageBegin = ($page - 1) * 4;
+            $pageEnd = $page + 3;
+            $stmt = $this->pdo->query("SELECT * FROM products WHERE category='Keyboards' LIMIT ".$pageBegin.",".$pageEnd);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function selectMicePage($page) {
-            $pageBegin = $page;
-            $pageEnd = $page + 4;
-            $stmt = $this->pdo->query("SELECT * FROM products WHERE category=:category LIMIT :pageStart,:pageFinish")
-            $stmt->execute(['category' => 'mice', 'pageStart' => $pageBegin, 'pageFinish' => $pageEnd])
+            $pageBegin = ($page - 1) * 4;
+            $pageEnd = $page + 3;
+            $stmt = $this->pdo->query("SELECT * FROM products WHERE category='Mice' LIMIT ".$pageBegin.",".$pageEnd);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function selectProductById($productId) {
+            $stmt = $this->pdo->query("SELECT 1 FROM products WHERE id=".$productId);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
 

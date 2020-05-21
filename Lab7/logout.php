@@ -2,7 +2,7 @@
 // Initialize the session
 session_start();
 
-// Unset all of the session variables
+// Unset all the session vars
 $_SESSION = array();
 
 // Destroy the session.
@@ -11,5 +11,4 @@ session_destroy();
 // Redirect to login page
 header("Location: login.html");
 die();
-exit;
 ?>

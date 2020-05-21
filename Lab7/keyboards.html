@@ -5,27 +5,66 @@
         <title>Keyboards</title>
         <script src="lib/jquery-2.0.3.js"></script>
         <script lang="javascript">
+            function cacheId(keyboardId) {
+                //TODO
+                document.getElementById("productId").value = keyboardId;
+            }
+
+            function showCart(cartList) {
+                console.log(cartList);
+                var content = '<table id="cart-list"><thead><tr><td>Name</td><td>Price</td><td>Category</td></tr></thead>';
+                cartList.forEach(item => {
+                    product = item;
+                    content +=  '<tr>';
+                    content +=  '<td>' + product.name + '</td>' +
+                                '<td>' + product.price + '</td>' +
+                                '<td>' + product.category + '</td>' +
+                                '<td>' + '<button id="btn-remove-id" onclick="cacheId(product.id)">Remove</button>' + '</td>';
+                    content += '</tr>';
+                });
+                content += '</table>';
+
+                $("#cart").html(content);
+            }
 
             function showKeyboards(keyboardList) {
-                // For now just show whatever works
                 console.log(keyboardList);
-                var table = "<table><thead><tr><td>ID</td><td>Name</td><td>Price</td></tr></thead>"; //<td>Category</td>
+                var content = "<table id='item-list'><thead><tr><td>Name</td><td>Price</td><td>Category</td></tr></thead>";
                 keyboardList.forEach(item => {
-                   keyboard = item;
-                   content +=   "<tr>";
-                   content +=   "<td>" + keyboard.id + "</td>" +
-                                "<td>" + keyboard.name + "</td>" +
-                                "<td>" + keyboard.price + "</td></tr>";  // "<td>" + keyboard.category + </td>;
+                    keyboard = item;
+                    content +=   "<tr>";
+                    content +=   "<td>" + keyboard.name + "</td>" +
+                                 "<td>" + keyboard.price + "</td>" +
+                                 "<td>" + keyboard.category + "</td>" +
+                                 "<td>" + '<button id="btn-buy-id" onclick="cacheId(keyboard.id)">Buy</button> ' + "</td>";
+                    content += "</tr>";
                 });
+                content += "</table>";
 
-                $("#main").html(table);
+                $("#main").html(content);
             }
 
             $(document).ready(function() {
-                $("#btn-getKeyboards").click(function () {
+                $("#btn-buy-id").click(function() {
                     $.getJSON(
-                        "controller/controller.php",
-                        {action: "getKeyboards", page: $('#pagek').val()},
+                        "controller.php",
+                        {
+                            action: "addProductToCart",
+                            productId: $('#productId').val()
+                        },
+                        showCart
+                    );
+                });
+            });
+
+            $(document).ready(function() {
+                $("#btn-getKeyboards").click(function() {
+                    $.getJSON(
+                        "controller.php",
+                        {
+                            action: "getKeyboards",
+                            page: $('#pagek').val()
+                        },
                         showKeyboards
                     );
                 });
@@ -40,12 +79,18 @@
             Keyboards:<br/>
             <input type="button" id="btn-getKeyboards" value="Get keyboards"/>
             Page:
-            <input type="text" name="pagek" id="pagek"/>
+            <input type="text" name="pagek" id="pagek" value="1"/>
             <br/>
         </section>
 
         <hr/>
 
         <section id="main"></section>
+
+        <hr/>
+
+        <section id="cart"> </section>
+        <input type="hidden" id="productId" name="productId" value="-1">
+
     </body>
 </html>

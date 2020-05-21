@@ -7,12 +7,12 @@
             echo json_encode($user);
         }
 
-        public function outputKeyboards($keyboards) {
-            echo json_encode($keyboards);
+        public function outputProducts($products) {
+            echo json_encode($products);
         }
 
-        public function outputMice($mice) {
-            echo json_encode($mice);
+        public function outputCart($cart) {
+            echo json_encode($cart);
         }
     }
 ?>

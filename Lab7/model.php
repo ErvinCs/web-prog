@@ -1,9 +1,8 @@
 <?php
 
-require_once '../config.php'
-require_once 'user.php'
-require_once 'product.php'
-require_once 'model.php'
+require_once 'config.php';
+require_once 'user.php';
+require_once 'product.php';
 
     class Model {
         private $db;
@@ -22,12 +21,16 @@ require_once 'model.php'
             return new User($result['id'], $result['username'], $result['password']);
         }
 
+        public function getProductById($id) {
+            $result = $this->db->selectProductById($id);
+            return new Product($result['id'], $result['name'], $result['price'], $result['category']);
+        }
+
         public function getKeyboards($page) {
             $results = $this->db->selectKeyboardsPage($page);
             $keyboards = array();
             foreach($results as $key => $val) {
                 $keyboard = $val;
-                //FK For product type (?) proly won't need it tho
                 array_push($keyboards, $keyboard);
             }
             return $keyboards;
@@ -38,7 +41,6 @@ require_once 'model.php'
             $mice = array();
             foreach($results as $key => $val) {
                 $mouse = $val;
-                //FK For product type (?) proly won't need it tho
                 array_push($mice, $mouse);
             }
             return $mice;
