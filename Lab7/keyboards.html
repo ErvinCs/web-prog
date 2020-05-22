@@ -5,54 +5,161 @@
         <title>Keyboards</title>
         <script src="lib/jquery-2.0.3.js"></script>
         <script lang="javascript">
-            function cacheId(keyboardId) {
-                //TODO
-                document.getElementById("productId").value = keyboardId;
+            function cacheIdBuy(id) {
+                const actualId = document.getElementById('productId'+id).getAttribute('value');
+                document.getElementById('prodIdCache').setAttribute('value', actualId.toString());
+                document.getElementById('editAction').setAttribute('value', 'buy');
             }
 
-            function showCart(cartList) {
-                console.log(cartList);
-                var content = '<table id="cart-list"><thead><tr><td>Name</td><td>Price</td><td>Category</td></tr></thead>';
-                cartList.forEach(item => {
-                    product = item;
-                    content +=  '<tr>';
-                    content +=  '<td>' + product.name + '</td>' +
-                                '<td>' + product.price + '</td>' +
-                                '<td>' + product.category + '</td>' +
-                                '<td>' + '<button id="btn-remove-id" onclick="cacheId(product.id)">Remove</button>' + '</td>';
-                    content += '</tr>';
-                });
-                content += '</table>';
+            function cacheIdRemove(id) {
+                const actualId = document.getElementById('productId'+id).getAttribute('value');
+                document.getElementById('prodIdCache').setAttribute('value', actualId.toString());
+                document.getElementById('editAction').setAttribute('value', 'remove');
 
-                $("#cart").html(content);
             }
 
-            function showKeyboards(keyboardList) {
+            function createCart(cartlist) {
+                $("#cart").html('');
+                document.getElementById('prodIdCache').setAttribute('value', '-1');
+                document.getElementById('editAction').setAttribute('value', '-1');
+                var size = cartlist.length;
+                var tbl = document.createElement('table');
+                var tr;
+                tbl.setAttribute('id', 'cartTable');
+
+                tr = tbl.insertRow(0);
+
+                var thname = document.createElement('th');
+                thname.innerHTML = "Name";
+                tr.appendChild(thname);
+
+                var thprice = document.createElement('th');
+                thprice.innerHTML = "Price";
+                tr.appendChild(thprice);
+
+                var thcateg = document.createElement('th');
+                thcateg.innerHTML = "Category";
+                tr.appendChild(thcateg);
+
+                var thbtn = document.createElement('th');
+                thbtn.innerHTML = "";
+                tr.appendChild(thbtn);
+
+                for(var i = 0; i < size; i++) {
+                    tr = tbl.insertRow(i+1);
+                    for (var column = 0; column < 4; column++) {
+                        var td = document.createElement('td');
+                        td = tr.insertCell(column);
+                        var elem;
+                        switch (column) {
+                            case 0:
+                                td.innerHTML = cartlist[i].name;
+                                break;
+                            case 1:
+                                td.innerHTML = cartlist[i].price;
+                                break;
+                            case 2:
+                                td.innerHTML = cartlist[i].category;
+                                break;
+                            case 3:
+                                elem = document.createElement('input');
+                                elem.setAttribute('type', 'button');
+                                elem.setAttribute('value', 'Remove');
+                                elem.setAttribute('id', 'btn-remove');
+                                elem.setAttribute('onclick', 'cacheIdRemove(' + i + ')');
+                                td.appendChild(elem);
+                                break;
+                            case 4:
+                                elem = document.createElement('input');
+                                elem.setAttribute('type', 'hidden');
+                                elem.setAttribute('id', 'productId' + i);
+                                elem.setAttribute('value', cartlist[i].id);
+                                td.appendChild(elem);
+                        }
+                    }
+
+                }
+
+                var section = document.getElementById('cart');
+                section.appendChild(tbl);
+            }
+
+            function createKeyboards(keyboardList) {
                 console.log(keyboardList);
-                var content = "<table id='item-list'><thead><tr><td>Name</td><td>Price</td><td>Category</td></tr></thead>";
-                keyboardList.forEach(item => {
-                    keyboard = item;
-                    content +=   "<tr>";
-                    content +=   "<td>" + keyboard.name + "</td>" +
-                                 "<td>" + keyboard.price + "</td>" +
-                                 "<td>" + keyboard.category + "</td>" +
-                                 "<td>" + '<button id="btn-buy-id" onclick="cacheId(keyboard.id)">Buy</button> ' + "</td>";
-                    content += "</tr>";
-                });
-                content += "</table>";
+                $("#main").html('');
+                var size = keyboardList.length;
+                var tbl = document.createElement('table');
+                var tr;
+                tbl.setAttribute('id', 'itemTable');
 
-                $("#main").html(content);
+                tr = tbl.insertRow(0);
+
+                var thname = document.createElement('th');
+                thname.innerHTML = "Name";
+                tr.appendChild(thname);
+
+                var thprice = document.createElement('th');
+                thprice.innerHTML = "Price";
+                tr.appendChild(thprice);
+
+                var thcateg = document.createElement('th');
+                thcateg.innerHTML = "Category";
+                tr.appendChild(thcateg);
+
+                var thbtn = document.createElement('th');
+                thbtn.innerHTML = "";
+                tr.appendChild(thbtn);
+
+                for(var i = 0; i < size; i++) {
+                    tr = tbl.insertRow(i+1);
+                    for (var column = 0; column < 5; column++) {
+                        var td = document.createElement('td');
+                        td = tr.insertCell(column);
+                        var elem;
+                        switch (column) {
+                            case 0:
+                                td.innerHTML = keyboardList[i].name;
+                                break;
+                            case 1:
+                                td.innerHTML = keyboardList[i].price;
+                                break;
+                            case 2:
+                                td.innerHTML = keyboardList[i].category;
+                                break;
+                            case 3:
+                                elem = document.createElement('input');
+                                elem.setAttribute('type', 'button');
+                                elem.setAttribute('value', 'Buy');
+                                elem.setAttribute('id', 'btn-buy');
+                                elem.setAttribute('onclick', 'cacheIdBuy(' + i + ');');
+                                td.appendChild(elem);
+                                break;
+                            case 4:
+                                elem = document.createElement('input');
+                                elem.setAttribute('type', 'hidden');
+                                elem.setAttribute('id', 'productId' + i);
+                                elem.setAttribute('value', keyboardList[i].id);
+                                td.appendChild(elem);
+
+                        }
+                    }
+
+                }
+
+                var section = document.getElementById('main');
+                section.appendChild(tbl);
             }
 
             $(document).ready(function() {
-                $("#btn-buy-id").click(function() {
+                $("#btn-showCart").click(function() {
                     $.getJSON(
-                        "controller.php",
+                        'controller.php',
                         {
-                            action: "addProductToCart",
-                            productId: $('#productId').val()
+                            action: 'editCart',
+                            editAction: $('#editAction').val(),
+                            productId: $('#prodIdCache').val()
                         },
-                        showCart
+                        createCart
                     );
                 });
             });
@@ -60,13 +167,14 @@
             $(document).ready(function() {
                 $("#btn-getKeyboards").click(function() {
                     $.getJSON(
-                        "controller.php",
+                        'controller.php',
                         {
-                            action: "getKeyboards",
+                            action: 'getKeyboards',
                             page: $('#pagek').val()
                         },
-                        showKeyboards
+                        createKeyboards
                     );
+                    //$.getScript('addProductToCartFn.js');
                 });
             });
         </script>
@@ -85,12 +193,17 @@
 
         <hr/>
 
-        <section id="main"></section>
+        <section id="main">
+        </section>
 
         <hr/>
 
-        <section id="cart"> </section>
-        <input type="hidden" id="productId" name="productId" value="-1">
+        <input type="button" id="btn-showCart" value="Show Cart"/>
+        <section id="cart">
+
+        </section>
+        <input type="hidden" id="prodIdCache" name="prodIdCache" value="-1">
+        <input type="hidden" id="editAction" name="editAction" value="-1">
 
     </body>
 </html>

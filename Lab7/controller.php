@@ -1,6 +1,7 @@
 <?php
 require_once 'model.php';
 require_once 'view.php';
+require_once 'product.php';
 session_start();
     class Controller {
         private $view;
@@ -19,16 +20,25 @@ session_start();
                     $this->{$_GET['action']}($_GET['page']);
                 } else if ($_GET['action'] == "getMice") {
                     $this->{$_GET['action']}($_GET['page']);
-                } else if ($_GET['action'] == "addProductToCart") {
-                    $this->{$_GET['action']}($_GET['productId']);
+                } else if ($_GET['action'] == "editCart") {
+                    $this->{$_GET['action']}($_GET['editAction'], $_GET['productId']);
                 }
             }
         }
 
-        public function addProductToCart($productId) {
+        public function editCart($editAction, $productId) {
             $product = $this->model->getProductById($productId);
             $cart = $_SESSION["cart"];
-            array_push($cart, $product);
+            if ($productId > 0) {
+                if ($editAction === 'buy') {
+                    array_push($cart, $product);
+                } else if ($editAction === 'remove') {
+                    if (($key = array_search($product, $cart)) !== false) {
+                        unset($cart[$key]);
+                    }
+                }
+                $_SESSION["cart"] = $cart;
+            }
             $this->view->outputCart($cart);
             return $cart;
         }

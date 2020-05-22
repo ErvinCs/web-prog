@@ -1,20 +1,3 @@
-In this lab you will have to develop a server-side web application in PHP.
-The web application has to manipulate a Mysql database with 1 to 3 tables and
-should implement the following base operations on these tables: select, insert, delete, update.
-Also the web application must use AJAX for getting data asynchronously from the web server
-and the web application should contain at least 5 web pages
-(client-side html or server-side php).
-
-For the database, you can use the mysql database on www.scs.ubbcluj.ro.
-On this mysql server you have an account, a password and a database, all identical to your username and password on the SCS network.
-
-Documentation can be found at:
-1) http://www.cs.ubbcluj.ro/~forest/wp
-2) http://www.php.net/manual/en
-3) http://www.w3schools.com/php
-4) http://www.w3schools.com/ajax
-
-----------------------------------------------------------------------
 
 Write a web application for an e-commerce store.
 The application should maintain information about the products it sells in the database. X
@@ -22,3 +5,39 @@ The user should browse products by categories (use AJAX for this). X
 Add and remove products to a shopping cart.
 Product browsing should be paged - products are displayed on pages with maximum 4 products on a page X
 (you should be able to go to the previous and the next page).
+
+----------------------------------------------------------------
+
+            function showCart(cartList) {
+                console.log(cartList);
+                var content = '<table id="cart-list"><thead><tr><td>Name</td><td>Price</td><td>Category</td></tr></thead>';
+                cartList.forEach(item => {
+                    product = item;
+                    content +=  '<tr>';
+                    content +=  '<td>' + product.name + '</td>' +
+                                '<td>' + product.price + '</td>' +
+                                '<td>' + product.category + '</td>' +
+                                '<td>' + '<button id="btn-remove-id" onclick="cacheId(product.id)">Remove</button>' + '</td>';
+                    content += '</tr>';
+                });
+                content += '</table>';
+
+                $("#cart").html(content);
+            }
+
+            function showKeyboards(keyboardList) {
+                console.log(keyboardList);
+                var content = "<table id='item-list'><thead><tr><td>Name</td><td>Price</td><td>Category</td></tr></thead>";
+                keyboardList.forEach(item => {
+                    keyboard = item;
+                    content +=   "<tr>";
+                    content +=   "<td>" + keyboard.name + "</td>" +
+                                 "<td>" + keyboard.price + "</td>" +
+                                 "<td>" + keyboard.category + "</td>" +
+                                 "<td>" + '<button id="btn-buy-id" onclick="cacheId(keyboard.id)">Buy</button> ' + "</td>";
+                    content += "</tr>";
+                });
+                content += "</table>";
+
+                $("#main").html(content);
+            }

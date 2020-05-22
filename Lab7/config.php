@@ -45,7 +45,7 @@
         }
 
         public function selectProductById($productId) {
-            $stmt = $this->pdo->query("SELECT 1 FROM products WHERE id=".$productId);
+            $stmt = $this->pdo->query("SELECT * FROM products WHERE id=".$productId);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 

@@ -41,8 +41,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $password = $user->getPassword();
             $id = $user->getId();
 
-            session_start();
-
             // Store session data
             $_SESSION["loggedin"] = true;
             $_SESSION["id"] = $id;
@@ -52,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Redirect to index page
             header("Location: index.php");
         } else {
-            // TODO: Show
+            // TODO: Show err msg
             header("Location: login.html");
         }
     }

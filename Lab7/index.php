@@ -8,7 +8,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("Location: login.html");
     exit;
 }
-$username = $_SESSION["username"];
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +19,7 @@ $username = $_SESSION["username"];
 <body>
     <div>
         <!-- Why tho -->
-        <h1>Welcome <b><?php echo("$username"); ?></b></h1>
+        <h1>Welcome <b><?php echo($_SESSION["username"]); ?></b></h1>
     </div>
     <p>
         <a href="logout.php">Sign Out</a>
