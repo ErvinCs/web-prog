@@ -5,11 +5,10 @@ import ubb.web.lab8.model.Board;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class BoardRepository extends IRepository<Board> {
+public class BoardRepository implements IRepository<Board> {
     private final String table_name = "boards";
 
     public BoardRepository() {}
@@ -28,16 +27,17 @@ public class BoardRepository extends IRepository<Board> {
         return board;
     }
 
-    //TODO
     @Override
     public void add(Board board) {
-        String sql = "INSERT INTO " + table_name + " (...) VALUES (?,?,?,?,?,?...)";
+        String sql = "INSERT INTO " + table_name + " (user_id, number_of_moves, tiles) VALUES (?,?,?)";
 
         try(Connection connection = DataSourceConfig.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
+            Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+            stmt.setLong(1, board.getUserId());
+            stmt.setInt(2, board.getNumberOfMoves());
+            stmt.setArray(3, tileArray);
             stmt.executeUpdate();
             connection.close();
         } catch (SQLException ex) {
@@ -45,16 +45,17 @@ public class BoardRepository extends IRepository<Board> {
         }
     }
 
-    //TODO
     @Override
-    public void update(Board user) {
-        String sql = "UPDATE" + table_name + "set ...=?, ...=? where board_id=?";
+    public void update(Board board) {
+        String sql = "UPDATE" + table_name + "set user_id=?, number_of_moves=?, tiles=? where board_id=?";
         try(Connection connection = DataSourceConfig.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql))
-        {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setLong(3, user.getId());
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+            statement.setLong(1, board.getUserId());
+            statement.setInt(2, board.getNumberOfMoves());
+            statement.setArray(3, tileArray);
+            statement.setLong(4, board.getId());
             statement.executeUpdate();
             connection.close();
         } catch (SQLException e)

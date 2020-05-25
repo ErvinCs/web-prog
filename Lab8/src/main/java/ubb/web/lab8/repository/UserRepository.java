@@ -96,6 +96,31 @@ public class UserRepository implements IRepository<User> {
         }
     }
 
+    public Optional<User> getByCredentials(String username, String password) {
+        String sql = "SELECT * FROM " + table_name + " WHERE username=? AND password=?";
+        try(Connection connection = DataSourceConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+            statement.setString(2, password);
+
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                User user = this.parseUser(rs);
+                connection.close();
+                return Optional.of(user);
+            }
+            else {
+                connection.close();
+                return Optional.empty();
+            }
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
     @Override
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();

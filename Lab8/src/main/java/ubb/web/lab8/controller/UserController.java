@@ -47,4 +47,9 @@ public class UserController {
         logger.log(Level.INFO, "Get User By Id: {}", id);
         return this.users.getById(id);
     }
+
+    public Optional<User> getUserByCredentials(String username, String password) {
+        logger.log(Level.INFO, "Get User By Credentials: {}, {}", username, password);
+        return this.users.getByCredentials(username, password);
+    }
 }
