@@ -3,6 +3,7 @@ package ubb.web.lab8.repository;
 import ubb.web.lab8.config.DataSourceConfig;
 import ubb.web.lab8.model.Board;
 
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,20 @@ public class BoardRepository implements IRepository<Board> {
 
     public BoardRepository() {}
 
-    private Board parseBoard(ResultSet rs) throws SQLException {
+    private Board parseBoard(ResultSet rs) throws SQLException, IOException {
         Long id = rs.getLong("board_id");
 
-        Array tilesArray = rs.getArray("tiles");
-        Integer[] tiles = (Integer[])tilesArray.getArray();
+        //Array tilesArray = rs.getArray("tiles");
+        //Integer[] tiles = (Integer[])tilesArray.getArray();
+
+        Integer[] tiles = new Integer[Board.BoardSize];
+        byte[] asBytes = rs.getBytes("tiles");
+        ByteArrayInputStream bin = new ByteArrayInputStream(asBytes);
+        DataInputStream din = new DataInputStream(bin);
+        for (int i = 0; i < Board.BoardSize; i++) {
+            tiles[i] = din.readInt();
+        }
+
         Long userId = rs.getLong("user_id");
         Integer numberOfMoves = rs.getInt("number_of_moves");
 
@@ -28,16 +38,26 @@ public class BoardRepository implements IRepository<Board> {
     }
 
     @Override
-    public void add(Board board) {
+    public void add(Board board) throws IOException{
         String sql = "INSERT INTO " + table_name + " (user_id, number_of_moves, tiles) VALUES (?,?,?)";
 
         try(Connection connection = DataSourceConfig.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+            //Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+
+            Integer[] tiles = board.getTiles();
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            DataOutputStream dout = new DataOutputStream(bout);
+            for (Integer integer : tiles) {
+                dout.writeInt(integer);
+            }
+            dout.close();
+            byte[] asBytes = bout.toByteArray();
+
             stmt.setLong(1, board.getUserId());
             stmt.setInt(2, board.getNumberOfMoves());
-            stmt.setArray(3, tileArray);
+            stmt.setBytes(3, asBytes);
             stmt.executeUpdate();
             connection.close();
         } catch (SQLException ex) {
@@ -46,15 +66,24 @@ public class BoardRepository implements IRepository<Board> {
     }
 
     @Override
-    public void update(Board board) {
+    public void update(Board board) throws IOException{
         String sql = "UPDATE" + table_name + "set user_id=?, number_of_moves=?, tiles=? where board_id=?";
         try(Connection connection = DataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+            //Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+            Integer[] tiles = board.getTiles();
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            DataOutputStream dout = new DataOutputStream(bout);
+            for (Integer integer : tiles) {
+                dout.writeInt(integer);
+            }
+            dout.close();
+            byte[] asBytes = bout.toByteArray();
+
             statement.setLong(1, board.getUserId());
             statement.setInt(2, board.getNumberOfMoves());
-            statement.setArray(3, tileArray);
+            statement.setBytes(3, asBytes);
             statement.setLong(4, board.getId());
             statement.executeUpdate();
             connection.close();
@@ -78,7 +107,7 @@ public class BoardRepository implements IRepository<Board> {
     }
 
     @Override
-    public Optional<Board> getById(Long id) {
+    public Optional<Board> getById(Long id) throws IOException{
         String sql = "SELECT * FROM " + table_name + " WHERE board_id=?";
         try(Connection connection = DataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -101,7 +130,7 @@ public class BoardRepository implements IRepository<Board> {
     }
 
     @Override
-    public List<Board> getAll() {
+    public List<Board> getAll() throws IOException {
         List<Board> boardList = new ArrayList<>();
         String sql = "SELECT * FROM " + table_name;
         try(Connection connection = DataSourceConfig.getConnection();

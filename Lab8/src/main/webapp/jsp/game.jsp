@@ -10,7 +10,7 @@
         <% User currentUser = (User)(session.getAttribute("currentSessionUser"));%>
         Playing as: <%= currentUser.getUsername() %>
         Number of moves: <%= BoardController.GetInstance().getBoardById(currentUser.getId()).get().getNumberOfMoves() %>
-        <form action="/gameServlet" method="post">
+        <form action="${pageContext.request.contextPath}/gameServlet" method="post">
             <input type="submit" name="reset" value="Reset">
         </form>
     </div>

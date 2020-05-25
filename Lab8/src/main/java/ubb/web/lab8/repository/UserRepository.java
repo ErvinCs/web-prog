@@ -3,6 +3,7 @@ package ubb.web.lab8.repository;
 import ubb.web.lab8.config.DataSourceConfig;
 import ubb.web.lab8.model.User;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

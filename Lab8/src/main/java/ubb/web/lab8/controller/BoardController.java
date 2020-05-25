@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import ubb.web.lab8.model.Board;
 import ubb.web.lab8.repository.BoardRepository;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +23,21 @@ public class BoardController {
 
     public List<Board> getBoards() {
         logger.log(Level.INFO, "Get Boards: {}", this.boards);
-        return boards.getAll();
+        try {
+            return boards.getAll();
+        } catch (IOException ex) {
+            logger.log(Level.ERROR, "Could not retrieve boards: " + ex.toString());
+        }
+        return new ArrayList<>();
     }
 
     public void addBoard(Board board) {
         logger.log(Level.INFO, "Add Board: {}", board);
-        this.boards.add(board);
+        try {
+            this.boards.add(board);
+        } catch (IOException ex) {
+            logger.log(Level.ERROR, "Could not add board: " + ex.toString());
+        }
     }
 
     public void deleteBoard(Long id) {
@@ -36,12 +47,21 @@ public class BoardController {
 
     public void updateBoard(Board board) {
         logger.log(Level.INFO, "Update Board: {}", board);
-        this.boards.update(board);
+        try {
+            this.boards.update(board);
+        } catch (IOException ex) {
+            logger.log(Level.ERROR, "Could not update board: " + ex.toString());
+        }
     }
 
     public Optional<Board> getBoardById(Long id) {
         logger.log(Level.INFO, "Get Board By Id: {}", id);
-        return this.boards.getById(id);
+        try {
+            return this.boards.getById(id);
+        } catch (IOException ex) {
+            logger.log(Level.ERROR, "Could not retrieve board: " + ex.toString());
+        }
+        return Optional.empty();
     }
 
 

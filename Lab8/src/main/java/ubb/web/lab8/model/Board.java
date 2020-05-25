@@ -4,7 +4,7 @@ public class Board extends BaseEntity{
     private Integer[] tiles;
     private Long userId;
     private Integer numberOfMoves;
-    private static final int BoardSize = 9;
+    public static final int BoardSize = 9;
 
     public Board() {}
 
