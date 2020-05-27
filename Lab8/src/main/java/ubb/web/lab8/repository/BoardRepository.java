@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class BoardRepository implements IRepository<Board> {
     private final String table_name = "boards";
@@ -20,7 +21,7 @@ public class BoardRepository implements IRepository<Board> {
         //Array tilesArray = rs.getArray("tiles");
         //Integer[] tiles = (Integer[])tilesArray.getArray();
 
-        Integer[] tiles = new Integer[Board.BoardSize];
+        int[] tiles = new int[Board.BoardSize];
         byte[] asBytes = rs.getBytes("tiles");
         ByteArrayInputStream bin = new ByteArrayInputStream(asBytes);
         DataInputStream din = new DataInputStream(bin);
@@ -46,11 +47,17 @@ public class BoardRepository implements IRepository<Board> {
 
             //Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
 
-            Integer[] tiles = board.getTiles();
+            int[] tiles = board.getTiles();
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             DataOutputStream dout = new DataOutputStream(bout);
-            for (Integer integer : tiles) {
-                dout.writeInt(integer);
+            Random rand = new Random();
+            for(int i = 1; i < Board.BoardSize; i++) {
+                if (i != (int)(Board.BoardSize/2))
+                    tiles[i] = rand.nextInt(Board.BoardSize);
+            }
+            tiles[(int)(Board.BoardSize/2)] = 0;
+            for (int i = 0; i < Board.BoardSize; i++) {
+                dout.writeInt(i);
             }
             dout.close();
             byte[] asBytes = bout.toByteArray();
@@ -72,7 +79,7 @@ public class BoardRepository implements IRepository<Board> {
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             //Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
-            Integer[] tiles = board.getTiles();
+            int[] tiles = board.getTiles();
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             DataOutputStream dout = new DataOutputStream(bout);
             for (Integer integer : tiles) {

@@ -1,7 +1,9 @@
 package ubb.web.lab8.model;
 
+import java.util.Random;
+
 public class Board extends BaseEntity{
-    private Integer[] tiles;
+    private int[] tiles;
     private Long userId;
     private Integer numberOfMoves;
     public static final int BoardSize = 9;
@@ -10,11 +12,11 @@ public class Board extends BaseEntity{
 
     public Board(Long userId) {
         this.userId = userId;
-        this.tiles = new Integer[BoardSize];
+        this.tiles = new int[BoardSize];
         this.numberOfMoves = 0;
     }
 
-    public Board(Integer[] tiles, Long userId, Integer numberOfMoves) {
+    public Board(int[] tiles, Long userId, Integer numberOfMoves) {
         this.tiles = tiles.clone();
         this.userId = userId;
         this.numberOfMoves = numberOfMoves;
@@ -28,11 +30,11 @@ public class Board extends BaseEntity{
         this.numberOfMoves = numberOfMoves;
     }
 
-    public Integer[] getTiles() {
+    public int[] getTiles() {
         return tiles;
     }
 
-    public void setTiles(Integer[] tiles) {
+    public void setTiles(int[] tiles) {
         this.tiles = tiles;
     }
 

@@ -34,6 +34,6 @@ public class LoginServlet extends HttpServlet {
         User user = userOptional.get();
         HttpSession session = req.getSession(true);
         session.setAttribute("currentSessionUser", user);
-        resp.sendRedirect("game.jsp");
+        resp.sendRedirect("jsp/game.jsp");
     }
 }

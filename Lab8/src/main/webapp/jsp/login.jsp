@@ -5,13 +5,16 @@
 </head>
 <body>
     <h3>Authentication</h3>
-    <form>
-        Enter your username
+    <form action="${pageContext.request.contextPath}/loginServlet" method="post">
+        Enter your username:
+        <br/>
         <input type="text" name="username"/>
         <br/>
-        <input type="text" name="password"/>
+        Password:
         <br/>
-        <input type="submit" value="submit"/>
+        <input type="password" name="password"/>
+        <br/>
+        <input type="submit" value="Login"/>
     </form>
 </body>
 </html>
