@@ -54,7 +54,7 @@ public class BoardRepository implements IRepository<Board> {
                 tiles[i] = Board.BoardSize - 1 - i;
             }
             for (int i = 0; i < Board.BoardSize; i++) {
-                dout.writeInt(i);
+                dout.writeInt(tiles[i]);
             }
             dout.close();
             byte[] asBytes = bout.toByteArray();
@@ -71,24 +71,24 @@ public class BoardRepository implements IRepository<Board> {
 
     @Override
     public void update(Board board) throws IOException{
-        String sql = "UPDATE" + table_name + "set user_id=?, number_of_moves=?, tiles=? where board_id=?";
+        String sql = "UPDATE " + table_name + " SET number_of_moves=?, tiles=? WHERE user_id=?";
         try(Connection connection = DataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             //Array tileArray = connection.createArrayOf("VARCHAR", board.getTiles());
+
             int[] tiles = board.getTiles();
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             DataOutputStream dout = new DataOutputStream(bout);
-            for (Integer integer : tiles) {
-                dout.writeInt(integer);
+            for (int i = 0; i < Board.BoardSize; i++) {
+                dout.writeInt(tiles[i]);
             }
             dout.close();
             byte[] asBytes = bout.toByteArray();
 
-            statement.setLong(1, board.getUserId());
-            statement.setInt(2, board.getNumberOfMoves());
-            statement.setBytes(3, asBytes);
-            statement.setLong(4, board.getId());
+            statement.setInt(1, board.getNumberOfMoves());
+            statement.setBytes(2, asBytes);
+            statement.setLong(3, board.getUserId());
             statement.executeUpdate();
             connection.close();
         } catch (SQLException e)
@@ -107,6 +107,28 @@ public class BoardRepository implements IRepository<Board> {
             connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public Optional<Board> getByUserId(Long userId) throws IOException{
+        String sql = "SELECT * FROM " + table_name + " WHERE user_id=?";
+        try(Connection connection = DataSourceConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, userId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                Board board = this.parseBoard(rs);
+                connection.close();
+                return Optional.of(board);
+            }
+            else {
+                connection.close();
+                return Optional.empty();
+            }
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+            return Optional.empty();
         }
     }
 

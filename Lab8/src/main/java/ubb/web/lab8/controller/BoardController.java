@@ -64,5 +64,15 @@ public class BoardController {
         return Optional.empty();
     }
 
+    public Optional<Board> getByUserId(Long userId) {
+        logger.log(Level.INFO, "Get Board By User Id: {}", userId);
+        try {
+            return this.boards.getByUserId(userId);
+        } catch (IOException ex) {
+            logger.log(Level.ERROR, "Could not retrieve board: " + ex.toString());
+        }
+        return Optional.empty();
+    }
+
 
 }
