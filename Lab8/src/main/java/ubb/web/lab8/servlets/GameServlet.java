@@ -1,5 +1,7 @@
 package ubb.web.lab8.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = {"/jsp/gameServlet"})
@@ -24,8 +27,19 @@ public class GameServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.log(Level.ERROR,"POST is not implemented!");
-        super.doPost(req, resp);
+        resp.setContentType("text/html;charset=UTF-8");
+        Long userId = Long.valueOf(req.getParameter("name"));
+        Board board = BoardController.GetInstance().getByUserId(userId).get();
+        for(int i = 0; i < Board.BoardSize; i++) {
+            board.setTileAt(i, Board.BoardSize - 1 - i);
+        }
+        BoardController.GetInstance().updateBoard(board);
+
+        HttpSession session = req.getSession(true);
+        session.setAttribute("currentSessionUser", UserController.GetInstance().getUserById(userId).get());
+        session.setAttribute("board", board.getTiles());
+        RequestDispatcher dispatcher = req.getRequestDispatcher("game.jsp");
+        dispatcher.forward(req,resp);
     }
 
     @Override
@@ -139,8 +153,13 @@ public class GameServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         session.setAttribute("currentSessionUser", user);
         session.setAttribute("board", board.getTiles());
-        RequestDispatcher dispatcher = req.getRequestDispatcher("game.jsp");
-        dispatcher.forward(req,resp);
+
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(board);
+        resp.getWriter().write(element.toString());
+
+//        RequestDispatcher dispatcher = req.getRequestDispatcher("game.jsp");
+//        dispatcher.forward(req,resp);
     }
 
     private Board swapTiles(Board board, int i, int j) {
