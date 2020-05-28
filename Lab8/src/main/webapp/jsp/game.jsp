@@ -6,6 +6,12 @@
 <html>
 <head>
     <title>Game</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/game.css" />
+    <script lang="javascript">
+        function GetBoard() {
+
+        }
+    </script>
 </head>
 <body>
     <div id="user-info">
@@ -19,16 +25,11 @@
                 username = currentUser.getUsername();
                 valid = true;
             }
-        %>
-        <br/>
-        Playing as: <%= username %>
-        <br/>
-        <%
             int numberOfMoves = 0;
+            BoardController instance = BoardController.GetInstance();
+            Optional<Board> optionalBoard = instance.getBoardById(currentUser.getId());
+            Board board = null;
             if (valid) {
-                BoardController instance = BoardController.GetInstance();
-                Optional<Board> optionalBoard = instance.getBoardById(currentUser.getId());
-                Board board;
                 if (optionalBoard.isEmpty()) {
                     board = new Board(currentUser.getId());
                     instance.addBoard(board);
@@ -38,6 +39,9 @@
                 numberOfMoves = board.getNumberOfMoves();
             }
         %>
+        <br/>
+        Playing as: <%= username %>
+        <br/>
         Number of moves: <%= numberOfMoves %>
         <br/>
         <form action="${pageContext.request.contextPath}/gameServlet" method="post">
@@ -45,34 +49,33 @@
         </form>
     </div>
 
-    <h2 class="game-state"></h2>
     <div class="game-grid">
-        <div cellId="0" class="cell">
-
+        <div cellId="0" cellValue="<%=board == null ? 0 : String.valueOf(board.getTileAt(0))%>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(0)) %>.png">
         </div>
-        <div cellId="1" class="cell">
-
+        <div cellId="1" cellValue="<%= board == null ? 0 : String.valueOf(board.getTileAt(1)) %>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(1)) %>.png">
         </div>
-        <div cellId="2" class="cell">
-
+        <div cellId="2" cellValue="<%=board == null ? 0 : String.valueOf(board.getTileAt(2))%>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(2)) %>.png">
         </div>
-        <div cellId="3" class="cell">
-
+        <div cellId="3" cellValue="<%= board == null ? 0 : String.valueOf(board.getTileAt(3)) %>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(3)) %>.png">
         </div>
-        <div cellId="4" class="cell">
-
+        <div cellId="4" cellValue="<%=board == null ? 0 : String.valueOf(board.getTileAt(4))%>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(4)) %>.png">
         </div>
-        <div cellId="5" class="cell">
-
+        <div cellId="5" cellValue="<%= board == null ? 0 : String.valueOf(board.getTileAt(5)) %>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(5)) %>.png">
         </div>
-        <div cellId="6" class="cell">
-
+        <div cellId="6" cellValue="<%=board == null ? 0 : String.valueOf(board.getTileAt(6))%>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(6)) %>.png">
         </div>
-        <div cellId="7" class="cell">
-
+        <div cellId="7" cellValue="<%= board == null ? 0 : String.valueOf(board.getTileAt(7)) %>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(7)) %>.png">
         </div>
-        <div cellId="8" class="cell">
-
+        <div cellId="8" cellValue="<%=board == null ? 0 : String.valueOf(board.getTileAt(8))%>" class="cell">
+            <img src="../res/<%= board == null ? 0 : String.valueOf(board.getTileAt(8)) %>.png">
         </div>
     </div>
 </body>

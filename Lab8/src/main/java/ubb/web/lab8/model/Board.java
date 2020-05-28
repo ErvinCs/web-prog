@@ -46,6 +46,10 @@ public class Board extends BaseEntity{
         this.userId = userId;
     }
 
+    public int getTileAt(int position) { return this.tiles[position];}
+
+    public void setTileAt(int position, int value) { this.tiles[position] = value;}
+
     public boolean compareUser(User other) {
         if (this.userId == other.getId()) {
             return true;

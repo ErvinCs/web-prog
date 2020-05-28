@@ -50,12 +50,9 @@ public class BoardRepository implements IRepository<Board> {
             int[] tiles = board.getTiles();
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             DataOutputStream dout = new DataOutputStream(bout);
-            Random rand = new Random();
-            for(int i = 1; i < Board.BoardSize; i++) {
-                if (i != (int)(Board.BoardSize/2))
-                    tiles[i] = rand.nextInt(Board.BoardSize);
+            for(int i = 0; i < Board.BoardSize; i++) {
+                tiles[i] = Board.BoardSize - 1 - i;
             }
-            tiles[(int)(Board.BoardSize/2)] = 0;
             for (int i = 0; i < Board.BoardSize; i++) {
                 dout.writeInt(i);
             }
