@@ -16,11 +16,25 @@ namespace Lab9.Controllers
             return View("FilterProducts");
         }
 
+        public void Logout()
+        {
+            if (Request.Cookies["Username"] != null)
+            {
+                Response.Cookies["Username"].Expires = DateTime.Now.AddDays(-1);
+            }
+            if (Request.Cookies["Username"] != null)
+            {
+                Response.Cookies["Cart"].Expires = DateTime.Now.AddDays(-1);
+            }
+            Response.Redirect("../Login"); 
+        }
+
         public string GetProductsByCategory()
         {
             string category = Request.Params["category"];
+            int limit = int.Parse(Request.Params["page"]);
             DAL dal = new DAL();
-            List<Product> productList = dal.GetProductsByCategory(category);
+            List<Product> productList = dal.GetProductsByCategory(category, limit);
             ViewData["productList"] = productList;
 
             string result = "<table><thead><th>Category</th><th>Name</th><th>Price</th><th>Purchase</th></thead>";

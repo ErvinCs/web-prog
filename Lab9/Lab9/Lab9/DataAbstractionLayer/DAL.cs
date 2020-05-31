@@ -81,7 +81,7 @@ namespace Lab9.DataAbstractionLayer
             return product;
         }
 
-        public List<Product> GetProductsByCategory(string category)
+        public List<Product> GetProductsByCategory(string category, int page)
         {
             MySql.Data.MySqlClient.MySqlConnection conn;
             List<Product> productList = new List<Product>();
@@ -94,7 +94,9 @@ namespace Lab9.DataAbstractionLayer
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = conn;
-                cmd.CommandText = "select * from products where category='" + category + "'";
+                int pageBegin = (page - 1) * 4;
+                int pageEnd = page + 3;
+                cmd.CommandText = "select * from products where category='" + category + "' limit " + pageBegin + "," + pageEnd;
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())

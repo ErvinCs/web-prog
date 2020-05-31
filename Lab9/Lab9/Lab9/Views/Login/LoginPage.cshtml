@@ -15,7 +15,13 @@
                 $.get("/Login/GetUserByCredentials", 
                     { username: $("#username").val(), password: $("#password").val() },
                     function (data, status) {
-                        window.location.href = '../Main';
+                        if (data == "0") {
+                            console.log("Login failed, status:" + data);
+                            $("#status").html("Invalid Credentials!");
+                        } else {
+                            console.log("Login success!");
+                            window.location.href = '../Main';
+                        }
                     });
             });
         });
@@ -24,11 +30,13 @@
 <body>
     <h3>Authentication</h3>
 
-    Username:  <input type="text" id="username" name="username" /> <br/>
-    Password:  <input type="text" id="password" name="password" /> <br/>
+    Username:  <br/>
+    <input type="text" id="username" /> <br/>
+    Password:  <br/>
+    <input type="password" id="password" /> <br/>
 
     <button type="button" id="login-btn">Login</button>
 
-    <div id="success"></div> <br />
+    <div id="status"></div> <br />
 </body>
 </html>

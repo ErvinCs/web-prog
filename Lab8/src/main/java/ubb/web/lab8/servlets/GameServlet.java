@@ -18,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = {"/jsp/gameServlet"})
@@ -44,7 +46,7 @@ public class GameServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=UTF-8");
+        //resp.setContentType("text/html;charset=UTF-8");
 
         int cellId = Integer.valueOf(req.getParameter("cellId"));
         int cellValue = Integer.valueOf(req.getParameter("cellVal"));
@@ -156,8 +158,18 @@ public class GameServlet extends HttpServlet {
         session.setAttribute("currentSessionUser", user);
         session.setAttribute("board", board.getTiles());
 
-
         //Issue: Sent Data is Undefined
+
+//        Map<String, String> options = new LinkedHashMap<>();
+//        for(int i = 0; i < Board.BoardSize; i++) {
+//            options.put(String.valueOf(i), String.valueOf(board.getTileAt(i)));
+//        }
+//        String json = new Gson().toJson(options);
+//
+//        resp.setContentType("application/json");
+//        resp.setCharacterEncoding("UTF-8");
+//        resp.getWriter().write(json);
+
 
 //        Cookie cookie = new Cookie("board", boardToString(board));
 //        cookie.setMaxAge(60);
@@ -178,7 +190,7 @@ public class GameServlet extends HttpServlet {
         //JsonElement element = gson.toJsonTree(board);
         //resp.getWriter().write(element.toString());
 
-        req.getRequestDispatcher("game.jsp").forward(req, resp);
+        //req.getRequestDispatcher("game.jsp").forward(req, resp);
     }
 
     private Board swapTiles(Board board, int i, int j) {

@@ -61,14 +61,14 @@
                     // success:function(data) {
                     //     //Issue: Undefined
                     //     console.log(data);
-                    //     processCookie("board");
-                    //     var obj = $.parseJSON(data);
+                    //     //processCookie("board");
+                    //     //var obj = $.parseJSON(data);
                     //
                     //    // var obj = S{param.values()};
                     //
-                    //    for(var i = 0; i < 9; i++) {
-                    //        $("#" + i.toString()).innerHTML = '<img src="../res/' + obj[i].cellVal + '.png">';
-                    //    }
+                    //    //for(var i = 0; i < 9; i++) {
+                    //    //    $("#" + i.toString()).innerHTML = '<img src="../res/' + obj[i].cellVal + '.png">';
+                    //    //}
                     // }
                 });
 

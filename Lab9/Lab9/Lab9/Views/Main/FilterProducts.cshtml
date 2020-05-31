@@ -20,7 +20,7 @@
 
         $(document).ready(function(){
             $("#display-btn").click(function() {
-                $.get("/Main/GetProductsByCategory", { category: $("#categories option:selected").val()},
+                $.get("/Main/GetProductsByCategory", { category: $("#categories option:selected").val(), page: $("#pages option:selected").val()},
                     function(data,status) {
                         $("#maindiv").html(data);
                     });
@@ -37,21 +37,34 @@
                         $("#cartdiv").html(data);
                     });
             });
+            $("#log-out-btn").click(function () {
+                $.get("/Main/Logout",
+                    function (data, status) {
+                        window.location.href = '../Login';
+                    });
+            });
         });
     </script>
 </head>
 <body onload="checkCookie">
-    <label for="category">Category: </label> 
+    <label for="category">Category: </label>
     <select name="category" id="categories">
         <option value="keyboards">keyboards</option>
         <option value="mice">mice</option>
         <option value="games">games</option>
     </select>
-    <input id="display-btn" type="button" value="Display" /> <br/>
+    <label for="page">Page: </label>
+    <select name="page" id="pages">
+        <option value="1">1</option>
+        <option value="2">2</option>
+    </select>
+    <input id="display-btn" type="button" value="Display" /> <br />
     Products:
-    <div id="maindiv"></div><br/>
-    <hr/>
-    <div id="cartdiv"></div><br/>
+    <div id="maindiv"></div><br />
+    <hr />
+    <div id="cartdiv"></div><br />
+    <hr />
+    <input id="log-out-btn" type="button" value="log out" />
 </body>
 </html>
 

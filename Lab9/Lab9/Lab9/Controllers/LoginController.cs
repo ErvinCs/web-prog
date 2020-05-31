@@ -24,15 +24,15 @@ namespace Lab9.Controllers
 
             if (user.Id == -1)
             {
-                string result = "Login Failed! Invalid Credentials";
+                string result = "0";
                 return result;
             }
             else
             {
-                string result = "Login Succesful!";
+                string result = "1";
                 Response.Cookies.Add(new HttpCookie("Username", username));
                 Response.Cookies.Add(new HttpCookie("Cart", ""));
-                Response.Redirect("../Main");   //FilterProducts.cshtml
+                Response.Redirect("../Main");  
                 return result;
             }
         }
