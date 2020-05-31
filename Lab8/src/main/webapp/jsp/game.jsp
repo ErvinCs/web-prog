@@ -36,6 +36,18 @@
     <script src="../lib/jquery-2.0.3.js"></script>
     <script lang="javascript">
 
+        // function processCookie(cookieName) {
+        //     var name = cookieName + "=";
+        //     var decodeCookie = decodeURIComponent(document.cookie);
+        //     var cookieArr = decodeCookie.split(';');
+        //
+        //     console.log(decodeCookie);
+        //     console.log(cookieArr);
+        //     for(var i = 0; i < cookieArr.length; i++) {
+        //         console.log(cookieArr[i]);
+        //     }
+        // }
+
         $(document).ready(function(){
             $(".cell").click(function(){
                 var div = $("div[name='game-cell']").eq($(this).index());
@@ -46,13 +58,18 @@
                     cellId: id,
                     cellVal: value,
                     userId: userId,
-                    //success:function(data) {
-                    //    console.log(data);
-                    //    var obj = $.parseJSON(data);
-                    //    for(var i = 0; i < BoardSizeHere; i++) {
-                    //        $("#" + i.toString()).innerHTML = '<img src="../res/' + obj[i].cellVal + '.png">'
-                    //   }
-                    //}
+                    // success:function(data) {
+                    //     //Issue: Undefined
+                    //     console.log(data);
+                    //     processCookie("board");
+                    //     var obj = $.parseJSON(data);
+                    //
+                    //    // var obj = S{param.values()};
+                    //
+                    //    for(var i = 0; i < 9; i++) {
+                    //        $("#" + i.toString()).innerHTML = '<img src="../res/' + obj[i].cellVal + '.png">';
+                    //    }
+                    // }
                 });
 
             });
@@ -68,7 +85,7 @@
         Number of moves: <%= numberOfMoves %>
         <br/>
         <form action="${pageContext.request.contextPath}/jsp/gameServlet" method="post">
-            <input type="submit" name="<%=userId%>" value="Reset">
+            <input type="submit" name="Reset" value="<%=userId%>">
         </form>
     </div>
 

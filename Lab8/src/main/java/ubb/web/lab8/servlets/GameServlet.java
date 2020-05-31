@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import ubb.web.lab8.controller.BoardController;
 import ubb.web.lab8.controller.UserController;
 import ubb.web.lab8.model.Board;
@@ -13,10 +15,7 @@ import ubb.web.lab8.model.User;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
@@ -28,11 +27,12 @@ public class GameServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
-        Long userId = Long.valueOf(req.getParameter("name"));
+        Long userId = Long.valueOf(req.getParameter("Reset"));
         Board board = BoardController.GetInstance().getByUserId(userId).get();
         for(int i = 0; i < Board.BoardSize; i++) {
             board.setTileAt(i, Board.BoardSize - 1 - i);
         }
+        board.setNumberOfMoves(0);
         BoardController.GetInstance().updateBoard(board);
 
         HttpSession session = req.getSession(true);
@@ -115,7 +115,7 @@ public class GameServlet extends HttpServlet {
             case 6:
                 if(cellId == 3) {
                     board = swapTiles(board, 6, 3);
-                } else if (cellId == 6) {
+                } else if (cellId == 7) {
                     board = swapTiles(board, 6, 7);
                 }
                 break;
@@ -143,6 +143,8 @@ public class GameServlet extends HttpServlet {
         board.setNumberOfMoves(board.getNumberOfMoves() + 1);
 
         BoardController.GetInstance().updateBoard(board);
+        logger.log(Level.INFO, "Updated board: {}", boardToString(board));
+
 
         Optional<User> userOptional = UserController.GetInstance().getUserById(userId);
         if (userOptional.isEmpty()) {
@@ -154,12 +156,29 @@ public class GameServlet extends HttpServlet {
         session.setAttribute("currentSessionUser", user);
         session.setAttribute("board", board.getTiles());
 
-        Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(board);
-        resp.getWriter().write(element.toString());
 
-//        RequestDispatcher dispatcher = req.getRequestDispatcher("game.jsp");
-//        dispatcher.forward(req,resp);
+        //Issue: Sent Data is Undefined
+
+//        Cookie cookie = new Cookie("board", boardToString(board));
+//        cookie.setMaxAge(60);
+//        resp.addCookie(cookie);
+
+        //req.setAttribute("board", board.getTiles());
+
+//        Gson gson = new Gson();
+//        JSONArray jsonArray = new JSONArray();
+//        for(int i = 0; i < Board.BoardSize; i++) {
+//            JSONObject obj = new JSONObject();
+//            String str = "" + i;
+//            obj.put(str, board.getTileAt(i));
+//            jsonArray.add(obj);
+//        }
+//        resp.getWriter().write(jsonArray.toString());
+
+        //JsonElement element = gson.toJsonTree(board);
+        //resp.getWriter().write(element.toString());
+
+        req.getRequestDispatcher("game.jsp").forward(req, resp);
     }
 
     private Board swapTiles(Board board, int i, int j) {
@@ -176,5 +195,14 @@ public class GameServlet extends HttpServlet {
             }
         }
         return true;
+    }
+
+    private String boardToString(Board board) {
+        String str = "";
+        for(int i = 0; i < Board.BoardSize-1; i++) {
+            str += board.getTileAt(i) + " ";
+        }
+        str += board.getTileAt(Board.BoardSize-1);
+        return str;
     }
 }

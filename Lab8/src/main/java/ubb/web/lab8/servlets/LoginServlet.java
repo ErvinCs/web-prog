@@ -28,12 +28,12 @@ public class LoginServlet extends HttpServlet {
         UserController userController = UserController.GetInstance();
         Optional<User> userOptional = userController.getUserByCredentials(username, password);
         if (userOptional.isEmpty()) {
-            resp.sendRedirect("invalidLogin.jsp");
+            resp.sendRedirect("jsp/invalidLogin.jsp");
+        } else {
+            User user = userOptional.get();
+            HttpSession session = req.getSession(true);
+            session.setAttribute("currentSessionUser", user);
+            resp.sendRedirect("jsp/game.jsp");
         }
-
-        User user = userOptional.get();
-        HttpSession session = req.getSession(true);
-        session.setAttribute("currentSessionUser", user);
-        resp.sendRedirect("jsp/game.jsp");
     }
 }
