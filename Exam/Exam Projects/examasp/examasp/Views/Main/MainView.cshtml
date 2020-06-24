@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Main</title>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script>
+        
+        function checkCookie() {
+            if (document.cookie == null) {
+                window.location.href('../Login');
+            }
+        }
+
+        $(document).ready(function () {
+            $("#log-out-btn").click(function () {
+                $.get("/Login/Logout",
+                    function (data, status) {
+                        window.location.href = '../Login';
+                    });
+            });
+        });
+        
+    </script>
+</head>
+<body onload="checkCookie">
+    <h3>  </h3>
+
+    <input id="" type="button" value="" />
+
+    <div id="">
+    </div>
+    <br/>
+
+
+    <input id="log-out-btn" type="button" value="Log Out" />
+</body>
+</html>
