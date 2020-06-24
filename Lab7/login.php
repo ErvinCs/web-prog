@@ -4,6 +4,7 @@ require_once 'model.php';
 require_once 'user.php';
 
 session_start();
+//TODO Redo this or at least remove useless parts
 
 // Check if the user is already logged in and redirect him to index.php
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {

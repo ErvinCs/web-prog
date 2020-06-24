@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Main</title>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script>
+
+        function checkCookie() {
+            if (document.cookie == null) {
+                window.location.href('../Login');
+            }
+        }
+
+        function newItem() {
+            var tbl = document.createElement('table');
+            var tr;
+            tbl.setAttribute('id', 'itemTable');
+
+            tr = tbl.insertRow(0);
+
+            var thname = document.createElement('th');
+            thname.innerHTML = "Name";
+            tr.appendChild(thname);
+
+            var thprice = document.createElement('th');
+            thprice.innerHTML = "Description";
+            tr.appendChild(thprice);
+
+            var thcateg = document.createElement('th');
+            thcateg.innerHTML = "Value";
+            tr.appendChild(thcateg);
+
+            for (var i = 0; i < 1; i++) {
+                tr = tbl.insertRow(i + 1);
+                for (var column = 0; column < 4; column++) {
+                    var td = document.createElement('td');
+                    td = tr.insertCell(column);
+                    var elem;
+                    switch (column) {
+                        case 0:
+                            td.innerHTML = '<input type="text" name="name"/>';
+                            break;
+                        case 1:
+                            td.innerHTML = '<input type="text" name="description"/>';
+                            break;
+                        case 2:
+                            td.innerHTML = '<input type="text" name="value"/>';
+                            break;
+                        case 3:
+                            td.innerHTML = '<input id="create-item" type="button" value="Create Item" onclick="createItem()">';
+                    }
+                }
+
+            }
+
+            var section = document.getElementById('add-items-div');
+            section.appendChild(tbl);
+        }
+
+        //{ userId: $("#user_id").attr("value"); },
+        $(document).ready(function () {
+            $("#show-items-btn").click(function () {
+                $.get("/Main/GetItemsByUser",
+                    function (data, status) {
+                        $("#items-div").html(data);
+                    });
+            });
+            $("#log-out-btn").click(function () {
+                $.get("/Login/Logout",
+                    function (data, status) {
+                        window.location.href = '../Login';
+                    });
+            });
+            $("#items-div").on('click', '#delete', function () {
+                $.get("Main/RemoveItem", { itemId: $(this).closest('button').attr('name') },
+                    function (data, status) {
+                        $("#items-div").html(data);
+                    });
+            });
+        });
+    </script>
+</head>
+<body onload="checkCookie">
+    <h3>Your Items</h3>
+
+    <input id="show-items-btn" type="button" value="Show Items" />
+
+    <div id="items-div">
+    </div>
+    <br/>
+
+    <div id="add-items-div">
+        <input id="new-item-btn" type="button" value="New Item" onclick="newItem()">
+    </div>
+    <br/>
+
+    <input id="log-out-btn" type="button" value="log out" />
+</body>
+</html>
