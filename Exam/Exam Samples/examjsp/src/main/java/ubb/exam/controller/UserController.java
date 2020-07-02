@@ -28,6 +28,16 @@ public class UserController {
         return users.getAll();
     }
 
+    public Optional<User> getUserById(Long id) {
+        logger.log(Level.INFO, "Get User By Id: {}", id);
+        return this.users.getById(id);
+    }
+
+    public Optional<User> getUserByCredentials(String username, String password) {
+        logger.log(Level.INFO, "Get User By Credentials: {}, {}", username, password);
+        return this.users.getByCredentials(username, password);
+    }
+
     public void addUser(User user) {
         logger.log(Level.INFO, "Add User: {}", user);
         this.users.add(user);
@@ -43,13 +53,5 @@ public class UserController {
         this.users.update(user);
     }
 
-    public Optional<User> getUserById(Long id) {
-        logger.log(Level.INFO, "Get User By Id: {}", id);
-        return this.users.getById(id);
-    }
 
-    public Optional<User> getUserByCredentials(String username, String password) {
-        logger.log(Level.INFO, "Get User By Credentials: {}, {}", username, password);
-        return this.users.getByCredentials(username, password);
-    }
 }

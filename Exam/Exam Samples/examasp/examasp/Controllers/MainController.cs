@@ -33,7 +33,7 @@ namespace examasp.Controllers
             }
 
 
-            DALItems dal = new DALItems();
+            DAL dal = new DAL();
             List<Item> itemList = dal.GetItemsByUserId(userId);
             ViewData["itemList"] = itemList;
 
@@ -70,7 +70,7 @@ namespace examasp.Controllers
 
             int itemId = int.Parse(Request.Params["itemId"]);
 
-            DALItems dal = new DALItems();
+            DAL dal = new DAL();
             dal.DeleteItem(itemId);
             List<Item> itemList = dal.GetItemsByUserId(userId);
             ViewData["itemList"] = itemList;

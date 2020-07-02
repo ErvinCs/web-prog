@@ -28,52 +28,6 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public void add(User user) {
-        String sql = "INSERT INTO " + table_name + " (username, pass) VALUES (?,?)";
-
-        try(Connection connection = DataSourceConfig.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
-            stmt.executeUpdate();
-            connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
-        String sql = "DELETE FROM " + table_name + " WHERE user_id=?";
-        try(Connection connection = DataSourceConfig.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
-            connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public void update(User user) {
-        String sql = "UPDATE " + table_name + " set username=?, password=? where user_id=?";
-        try(Connection connection = DataSourceConfig.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql))
-        {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setLong(3, user.getId());
-            statement.executeUpdate();
-            connection.close();
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public Optional<User> getById(Long id) {
         String sql = "SELECT * FROM " + table_name + " WHERE user_id=?";
         try(Connection connection = DataSourceConfig.getConnection();
@@ -142,4 +96,52 @@ public class UserRepository implements IRepository<User> {
             return null;
         }
     }
+
+    @Override
+    public void add(User user) {
+        String sql = "INSERT INTO " + table_name + " (username, pass) VALUES (?,?)";
+
+        try(Connection connection = DataSourceConfig.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM " + table_name + " WHERE user_id=?";
+        try(Connection connection = DataSourceConfig.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        String sql = "UPDATE " + table_name + " set username=?, password=? where user_id=?";
+        try(Connection connection = DataSourceConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setLong(3, user.getId());
+            statement.executeUpdate();
+            connection.close();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
 }

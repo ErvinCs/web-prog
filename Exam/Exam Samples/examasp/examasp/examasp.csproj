@@ -127,12 +127,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="DataAbstractionLayer\DALItems.cs" />
-    <Compile Include="DataAbstractionLayer\DALUsers.cs" />
+    <Compile Include="DataAbstractionLayer\DAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemUser.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -24,11 +24,33 @@ class DBUtils {
         }
     }
 
+    // ---------- Users ----------
     public function selectUser($username, $password) {
         $stmt = $this->pdo->query("SELECT * FROM users WHERE username='".$username."' AND password='".$password."'");
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function selectAllUsers() {
+        $stmt = $this->pdo->query("SELECT * FROM users");
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteUser($userId) {
+        $rows = $this->pdo->exec("DELETE FROM users WHERE user_id=".$userId);
+        return $rows;
+    }
+
+    public function addUser($username, $password) {
+        $rows = $this->pdo->exec("INSERT INTO users (username, password) VALUES ('".$username."','".$password."')");
+        return $rows;
+    }
+
+    public function updateUser($userId, $username, $password) {
+        $rows = $this->pdo->exec("UPDATE users SET username='".$username."',password='".$password."' WHERE user_id=".$userId);
+        return $rows;
+    }
+
+    // ---------- Items ----------
     public function addItem($name, $description, $value, $userId) {
         $rows = $this->pdo->exec("INSERT INTO items (name, description, value, user_id) VALUES ('".
             $name."','".$description."',".$value.",".$userId.")");
@@ -58,6 +80,21 @@ class DBUtils {
 
     public function getItemsByUser($userId) {
         $stmt = $this->pdo->query("SELECT * FROM items WHERE user_id=".$userId);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getItemsPaged($page) {
+        $pageBegin = ($page - 1) * 4;
+        $pageEnd = $page + 3;
+        $stmt = $this->pdo->query("SELECT * FROM items LIMIT ".$pageBegin.",".$pageEnd);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getNoItemsPerUser() {
+        $stmt = $this->pdo->query("SELECT users.user_id, users.username," +
+            "(SELECT COUNT(items.item_id) FROM items WHERE items.user_id = users.user_id) AS item_count," +
+            "(SELECT SUM(items.value) FROM items WHERE items.user_id = users.user_id) AS total_value" +
+            "FROM users");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
