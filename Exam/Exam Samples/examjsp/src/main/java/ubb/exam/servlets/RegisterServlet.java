@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = {"/loginServlet"})
-public class LoginServlet extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(LoginServlet.class);
+@WebServlet(urlPatterns = {"/registerServlet"})
+public class RegisterServlet extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(RegisterServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,14 +26,15 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         UserController userController = UserController.GetInstance();
-        Optional<User> userOptional = userController.getUserByCredentials(username, password);
+        Optional<User> userOptional = userController.getUserByUsername(username);
         if (userOptional.isEmpty()) {
-            resp.sendRedirect("jsp/invalidLogin.jsp");
-        } else {
-            User user = userOptional.get();
+            User user = new User(username, password);
+            userController.addUser(user);
             HttpSession session = req.getSession(true);
             session.setAttribute("currentSessionUser", user);
             resp.sendRedirect("jsp/menu.jsp");
+        } else {
+            resp.sendRedirect("jsp/invalidRegister.jsp");
         }
     }
 }

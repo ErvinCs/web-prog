@@ -34,13 +34,11 @@ public class ViewItemsServlet extends HttpServlet {
         String data = itemListData.toJson(itemList);
 
         resp.getWriter().write(data);
-//        req.setAttribute("items", itemController.getItemsByUser(user.getId()));
-//        req.getRequestDispatcher("jsp/viewItems.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
-
+        //TODO
     }
 }

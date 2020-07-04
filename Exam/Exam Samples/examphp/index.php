@@ -19,7 +19,9 @@ if(!isset($_SESSION["Loggedin"]) || $_SESSION["Loggedin"] !== true){
 </head>
 <body>
     <div class="link-container">
-        <a href="viewItems.html">To Website</a>
+        <a href="viewItems.html">View My Items</a>
+        <br/>
+        <a href="viewAdminItems.html">Admin Items</a>
         <br/>
         <a href="logout.php">Logout</a>
         <br/>

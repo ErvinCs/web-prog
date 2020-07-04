@@ -75,6 +75,30 @@ public class UserRepository implements IRepository<User> {
         }
     }
 
+    public Optional<User> getByUsername(String username) {
+        String sql = "SELECT * FROM " + table_name + " WHERE username=?";
+        try(Connection connection = DataSourceConfig.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                User user = this.parseUser(rs);
+                connection.close();
+                return Optional.of(user);
+            }
+            else {
+                connection.close();
+                return Optional.empty();
+            }
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
     @Override
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
@@ -99,7 +123,7 @@ public class UserRepository implements IRepository<User> {
 
     @Override
     public void add(User user) {
-        String sql = "INSERT INTO " + table_name + " (username, pass) VALUES (?,?)";
+        String sql = "INSERT INTO " + table_name + " (username, password) VALUES (?,?)";
 
         try(Connection connection = DataSourceConfig.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)) {

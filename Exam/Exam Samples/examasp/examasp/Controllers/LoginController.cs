@@ -21,23 +21,49 @@ namespace examasp.Controllers
             ClearCookies();
             string username = Request.Params["username"];
             string password = Request.Params["password"];
-            DALUsers dal = new DALUsers();
+            DAL dal = new DAL();
             User user = dal.GetUserByCredentials(username, password);
 
+            string result;
             if (user.User_id == -1)
             {
-                string result = "0";
-                return result;
+                result = "0";
             }
             else
             {
-                string result = "1";
+                result = "1";
                 Response.Cookies.Add(new HttpCookie("Username", username));
                 Response.Cookies.Add(new HttpCookie("UserId", user.User_id.ToString()));
                 Response.Cookies.Add(new HttpCookie("Cart", ""));
                 Response.Redirect("../Main");
-                return result;
             }
+            return result;
+        }
+
+        public string RegisterUser()
+        {
+            string username = Request.Params["username"];
+            string password = Request.Params["password"];
+            DAL dal = new DAL();
+            User user = dal.GetUserByUsername(username);
+
+            string result;
+            if (user.User_id == -1)
+            {
+                user.Username = username;
+                user.Password = password;
+                dal.AddUser(user);
+                result = "1";
+                Response.Cookies.Add(new HttpCookie("Username", username));
+                Response.Cookies.Add(new HttpCookie("UserId", user.User_id.ToString()));
+                Response.Cookies.Add(new HttpCookie("Cart", ""));
+                Response.Redirect("../Main");
+            }
+            else
+            {
+                result = "0";
+            }
+            return result;
         }
 
         public void Logout()

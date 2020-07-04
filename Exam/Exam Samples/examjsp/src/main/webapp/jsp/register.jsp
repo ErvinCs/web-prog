@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="../css/login.css">
 </head>
 <body>
     <div class="login-box">
-        <h3>Login</h3>
-        <form action="${pageContext.request.contextPath}/loginServlet" method="post">
+        <h3>Register</h3>
+        <form action="${pageContext.request.contextPath}/registerServlet" method="post">
             <label>Username: </label>
             <input type="text" name="username"/>
 
@@ -18,9 +18,9 @@
 
             <br/>
 
-            <input type="submit" value="Login"/>
+            <input type="submit" value="Register"/>
         </form>
-        <a href="register.jsp">Register Here!</a>
+        <a href="login.jsp">Login Here!</a>
     </div>
 </body>
 </html>

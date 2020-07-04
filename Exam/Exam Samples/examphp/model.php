@@ -22,6 +22,16 @@ class Model {
         return new User($result['user_id'], $result['username'], $result['password']);
     }
 
+    public function getUserByUsername($username) {
+        $result = $this->db->selectUserByUsername($username);
+
+        if (!$result) {
+            return new User(-1, 'No such user!', 'None');
+        }
+
+        return new User($result['user_id'], $result['username'], $result['password']);
+    }
+
     public function getAllUsers() {
         $result = $this->db->selectAllUsers();
         $users = array();

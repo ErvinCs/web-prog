@@ -23,6 +23,19 @@
                         }
                     });
             });
+            $("#register-btn").click(function () {
+                $.get("/Login/RegisterUser",
+                    { username: $("#username").val(), password: $("#password").val() },
+                    function (data, status) {
+                        if (data == "0") {
+                            console.log("Registration failed, status:" + data);
+                            $("#status").html("A user with this Username already exists!");
+                        } else {
+                            console.log("Regitration success!");
+                            window.location.href = '../Main';
+                        }
+                    });
+            });
         });
     </script>
     <style>
@@ -58,16 +71,17 @@
         <h3>Login</h3>
 
         <label>Username: </label>
-        <input type="text" name="username" id="username"/>
+        <input type="text" name="username" id="username" />
 
         <br />
 
         <label>Password:</label>
-        <input type="password" name="password" id="password"/>
+        <input type="password" name="password" id="password" />
 
         <br />
 
         <button type="button" id="login-btn">Login</button>
+        <button type="button" id="register-btn">Register</button>
 
         <div id="status"></div> <br />
     </div>

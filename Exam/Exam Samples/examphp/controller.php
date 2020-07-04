@@ -24,6 +24,9 @@ class Controller {
                 case "getUser":
                     $this->{$_GET['action']}($_GET['username'], $_GET['password']);
                     break;
+                case "getUserByUsername":
+                    $this->{$_GET['action']}($_GET['username']);
+                    break;
                 case "deleteUser":
                     $this->{$_GET['action']}($_GET['userId']);
                     break;
@@ -55,6 +58,13 @@ class Controller {
     // ---------- Users ----------
     public function getUser($username, $password) {
         $user = $this->model->getUser($username, $password);
+        $this->view->output($user);
+        return $user;
+    }
+
+    //TODO
+    public function getUserByUsername($username) {
+        $user = $this->model->getUserByUsername($username);
         $this->view->output($user);
         return $user;
     }

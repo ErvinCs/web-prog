@@ -38,6 +38,11 @@ public class UserController {
         return this.users.getByCredentials(username, password);
     }
 
+    public Optional<User> getUserByUsername(String username) {
+        logger.log(Level.INFO, "Get User by Username: {}", username);
+        return this.users.getByUsername(username);
+    }
+
     public void addUser(User user) {
         logger.log(Level.INFO, "Add User: {}", user);
         this.users.add(user);

@@ -35,6 +35,11 @@ class DBUtils {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function selectUserByUsername($username) {
+        $stmt = $this->pdo->query("SELECT * FROM users WHERE username='".$username."'");
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function deleteUser($userId) {
         $rows = $this->pdo->exec("DELETE FROM users WHERE user_id=".$userId);
         return $rows;
