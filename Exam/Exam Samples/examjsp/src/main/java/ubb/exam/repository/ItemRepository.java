@@ -115,10 +115,7 @@ public class ItemRepository implements IRepository<Item> {
 
     public List<ItemUser> getNoItemsPerUser() {
         List<ItemUser> itemList = new ArrayList<>();
-        String sql = "select users.user_id, users.username," +
-                "(select count(items.item_id) from items where items.user_id = users.user_id) as item_count," +
-                "(select sum(items.value) from items where items.user_id = users.user_id) as total_value" +
-                "from users";
+        String sql = "select users.user_id, users.username, (select count(items.item_id) from items where items.user_id = users.user_id) as item_count, (select sum(items.value) from items where items.user_id = users.user_id) as total_value from users";
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();

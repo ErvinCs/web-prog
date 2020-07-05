@@ -39,6 +39,15 @@ public class ViewItemsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
-        //TODO
+
+        HttpSession session = req.getSession(true);
+        User user = (User)session.getAttribute("currentSessionUser");
+
+        String name = req.getParameter("name");
+        String description = req.getParameter("description");
+        int value = Integer.valueOf(req.getParameter("value"));
+
+        ItemController itemCon = ItemController.GetInstance();
+        itemCon.addItem(new Item(name, description, value, user.getId()));
     }
 }

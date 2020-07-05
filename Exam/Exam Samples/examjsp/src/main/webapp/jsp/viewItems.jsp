@@ -17,6 +17,10 @@
     <script lang="javascript">
         var counter = 0;
 
+        function removeItemRaw(rawId) {
+            $("#" + rawId).remove();
+        }
+
         function removeItem(id) {
             $("#itemTable" + id).remove();
         }
@@ -51,19 +55,18 @@
                     var elem;
                     switch (column) {
                         case 0:
-                            td.innerHTML = '<input type="text" name="name"/>';
+                            td.innerHTML = '<input type="text" class="tbl-input" name="name" id="name"/>';
                             break;
                         case 1:
-                            td.innerHTML = '<input type="text" name="description"/>';
+                            td.innerHTML = '<input type="text" class="tbl-input" name="description" id="desc"/>';
                             break;
                         case 2:
-                            td.innerHTML = '<input type="text" name="value"/>';
+                            td.innerHTML = '<input type="text" class="tbl-input" name="value" id="value"/>';
                             break;
                         case 3:
-                            td.innerHTML = '<input id="undo-item" type="button" value="Remove" onclick="removeItem(' + thisId + ')">';
+                            td.innerHTML = '<input id="undo-item" class="tbl-input" type="button" value="Remove" onclick="removeItem(' + thisId + ')">';
                     }
                 }
-
             }
 
             var section = document.getElementById('add-items-div');
@@ -94,14 +97,13 @@
             tr.appendChild(thcateg);
 
             for(var i = 0; i < size; i++) {
-                //tr = tbl.insertRow(i+1);
+                tr = tbl.insertRow(i+1);
                 //if (items[i].value > 100) {
                 //    tr.style.background = "red";
                 //}
                 for (var column = 0; column < 4; column++) {
                     var td = document.createElement('td');
                     td = tr.insertCell(column);
-                    var elem;
                     switch (column) {
                         case 0:
                             td.innerHTML = items[i].name;
@@ -113,7 +115,7 @@
                             td.innerHTML = items[i].value;
                             break;
                         case 3:
-                            td.innerHTML = '<a href="http://localhost:8080/exam_jsp_war_exploded/jsp/viewDetailsItem?itemId=' + items[i].id + '">Edit</a>';
+                            td.innerHTML = '<a href="http://localhost:8080/exam_jsp_war_exploded/jsp/detailsItemServlet?itemId=' + items[i].id + '">Edit</a>';
                     }
                 }
 
@@ -131,15 +133,34 @@
                 );
             });
             $("#push-items-btn").click(function() {
-                $(".new-items").each(function() {
-                    //TODO
-                    var tbl = $("table[class='new-items']").eq($(this).index());
-                    tbl.find('.')
-                    var item;
-                    item["name"] = tbl.ro
-                    item["description"] = 2;
-                    item["value"] = 3;
-                    $.post()
+                $("table.new-items").each(function() {
+                    var attributes = [];
+                    var colCount = 0;
+                    var tbl = $(this);
+                    tbl.children('tbody').children('tr:last').children('td').each(function () {
+                        switch (colCount) {
+                            case 0:
+                                attributes[colCount] = $(this).find('.tbl-input').val();
+                                break;
+                            case 1:
+                                attributes[colCount] = $(this).find('.tbl-input').val();
+                                break;
+                            case 2:
+                                attributes[colCount] = $(this).find('.tbl-input').val();
+                                break;
+
+                        }
+                        colCount++;
+                        //console.log(this);
+                    });
+
+                    $.post('viewItemsServlet', {
+                        name: attributes[0],
+                        description: attributes[1],
+                        value: attributes[2]
+                    });
+                    //console.log(tbl.attr('id'));
+                    removeItemRaw(tbl.attr('id'));
                 });
                 $.getJSON('viewItemsServlet',
                     {},
@@ -161,12 +182,18 @@
     <br/>
 
     <div id="add-items-div">
-        <input id="new-item-btn" type="button" value="New Item" onclick="newItem()">
         <input id="push-items-btn" type="button" value="Create Items">
+        <br/>
+        <input id="new-item-btn" type="button" value="New Item" onclick="newItem()">
     </div>
     <br/>
 
-    <input id="log-out-btn" type="button" value="Log Out" onclick="document.location.href='logout.jsp'">
+    <section>
+        <input id="back-btn" type="button" value="Menu" onclick="document.location.href='menu.jsp'">
+        <br/>
+        <input id="log-out-btn" type="button" value="Log Out" onclick="document.location.href='logout.jsp'">
+        <br/>
+    </section>
 
     <input type="hidden" id="user_id" name="user_id" value="<%=currentUser.getId()%>">
 </body>
