@@ -2,33 +2,22 @@
     Layout = null;
 }
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Main</title>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
-    <style>
-        h3 {
-            text-align: center;
-        }
-
-        .my-items {
-        }
-
-        .new-items {
-        }
-
-        .tbl-input {
-        }
-    </style>
-    <script>
+    <script lang="javascript">
         var counter = 0;
 
         function checkCookie() {
             if (document.cookie == null) {
                 window.location.href('../Login');
             }
+        }
+
+        function removeItemRaw(rawId) {
+            $("#" + rawId).remove();
         }
 
         function removeItem(id) {
@@ -96,9 +85,8 @@
                         window.location.href = '../Login';
                     });
             });
-            $("#menu-btn").click(function () {
-                function (data, status) {
-                    window.location.href = '../Menu';
+            $("#admin-btn").click(function () {
+                    window.location.href = '../Admin';
             });
             $("#push-items-btn").click(function () {
                 $("table.new-items").each(function () {
@@ -122,7 +110,7 @@
                         //console.log(this);
                     });
 
-                    $.post('Main/AddItems', {
+                    $.post('/Main/AddItem', {
                         name: attributes[0],
                         description: attributes[1],
                         value: attributes[2]
@@ -138,8 +126,22 @@
         });
 
     </script>
+    <style>
+        h3 {
+            text-align: center;
+        }
+
+        .my-items {
+        }
+
+        .new-items {
+        }
+
+        .tbl-input {
+        }
+    </style>
 </head>
-<body onload="checkCookie">
+<body>
     <h3>Your Items</h3>
 
     <input id="show-items-btn" type="button" value="Show Items" />
@@ -155,7 +157,7 @@
     </div>
     
     <section>
-        <input id="menu-btn" type="button" value="Menu" />
+        <input id="admin-btn" type="button" value="Admin" />
         <br />
         <input id="log-out-btn" type="button" value="Log Out" />
         <br />

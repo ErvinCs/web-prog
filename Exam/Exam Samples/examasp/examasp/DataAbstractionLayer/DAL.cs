@@ -11,6 +11,8 @@ namespace examasp.DataAbstractionLayer
     {
         const string ConnectionString = "server=localhost;uid=root;pwd=;database=exam;";
 
+        // ---------- Users ----------
+
         public User GetUserByCredentials(string username, string password)
         {
             MySql.Data.MySqlClient.MySqlConnection conn;
@@ -199,6 +201,8 @@ namespace examasp.DataAbstractionLayer
             }
         }
 
+        // ---------- Items ----------
+
         public Item GetItemById(int id)
         {
             MySql.Data.MySqlClient.MySqlConnection conn;
@@ -352,10 +356,7 @@ namespace examasp.DataAbstractionLayer
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = conn;
-                cmd.CommandText = "select users.user_id, users.username," +
-                    "(select count(items.item_id) from items where items.user_id = users.user_id) as item_count," +
-                    "(select sum(items.value) from items where items.user_id = users.user_id) as total_value" +
-                    "from users";
+                cmd.CommandText = "select users.user_id, users.username, (select count(items.item_id) from items where items.user_id = users.user_id) as item_count, (select sum(items.value) from items where items.user_id = users.user_id) as total_value from users";
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 while(reader.Read())
@@ -365,6 +366,7 @@ namespace examasp.DataAbstractionLayer
                     itemUser.Username = reader.GetString("username");
                     itemUser.Item_count = reader.GetInt32("item_count");
                     itemUser.Total_value = reader.GetInt32("total_value");
+                    itemList.Add(itemUser);
 
                 }
                 reader.Close();

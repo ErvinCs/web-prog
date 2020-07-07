@@ -20,7 +20,7 @@
                     description: $("#desc").attr("value"),
                     value: $("#value").attr("value")
                 });
-                //window.location.href = 'viewItems.jsp';
+                window.location.href = 'viewItems.jsp';
             });
             $("#delete-btn").click(function () {
                 var thisItemId = $("#item_id").attr("value");
@@ -28,7 +28,7 @@
                     operation: 'delete',
                     itemId: thisItemId
                 });
-                //window.location.href = 'viewItems.jsp';
+                window.location.href = 'viewItems.jsp';
             });
             $('#name').on("input", function() {
                 //var input = this.value;

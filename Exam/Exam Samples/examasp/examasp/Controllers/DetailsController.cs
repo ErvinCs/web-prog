@@ -13,7 +13,7 @@ namespace examasp.Controllers
         // GET: Details
         public ActionResult Index()
         {
-            return View();
+            return View("DetailsView");
         }
 
         public string RemoveItem()
@@ -32,26 +32,46 @@ namespace examasp.Controllers
                 username = cookieUsername.Value;
             }
 
-            int itemId = int.Parse(Request.Params["itemId"]);
+            int itemId = Int32.Parse(Request.Params["itemId"]);
 
             DAL dal = new DAL();
             dal.DeleteItem(itemId);
-            List<Item> itemList = dal.GetItemsByUserId(userId);
-            ViewData["itemList"] = itemList;
 
-            string result = "User: " + username + "<br/>";
+            return "Item #" + itemId + " Deleted!";
+        }
 
-            result += "<table><thead><th>Name</th><th>Description</th><th>Value</th><th>Remove</th></thead>";
-            foreach (Item i in itemList)
+        public string UpdateItem()
+        {
+            int userId = -1;
+            string username = "";
+            HttpCookie cookieId = Request.Cookies["UserId"];
+            HttpCookie cookieUsername = Request.Cookies["Username"];
+            if (cookieId == null || cookieUsername == null)
             {
-                result += "<tr>";
-                result += "<td>" + i.Name + "</td><td>" + i.Description + "</td><td>" + i.Value + "</td>";
-                result += "<td><button type='button' id='delete' name=" + i.Item_id + "> Remove </button></td>";
-                result += "</tr>";
+                Response.Redirect("../Shared/Error.cshtml");
+            }
+            else
+            {
+                userId = Int32.Parse(cookieId.Value);
+                username = cookieUsername.Value;
             }
 
-            result += "</table>";
-            return result;
+            int itemId = Int32.Parse(Request.Params["itemId"]);
+            string name = Request.Params["name"];
+            string description = Request.Params["description"];
+            int value = Int32.Parse(Request.Params["value"]);
+
+            Item item = new Item();
+            item.Item_id = itemId;
+            item.Name = name;
+            item.Description = description;
+            item.Value = value;
+            item.User_id = userId;
+
+            DAL dal = new DAL();
+            dal.UpdateItem(item);
+
+            return "Item #" + itemId + " Updated!";
         }
     }
 }

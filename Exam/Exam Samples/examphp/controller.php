@@ -44,11 +44,11 @@ class Controller {
                 case "removeItem":
                     $this->{$_GET['action']}($_GET['itemId']);
                     break;
-                case "addItem": //$name, $description, $value, $userId
-                    $this->{$_GET['action']}($_GET['name'], $_GET['description'], $_GET['value'], $_GET['userId']);
+                case "addItem":
+                    $this->{$_GET['action']}($_GET['name'], $_GET['description'], $_GET['value']);
                     break;
-                case "updateItem": //$itemId, $name, $description, $value, $userId
-                    $this->{$_GET['action']}($_GET['itemId'], $_GET['name'], $_GET['description'], $_GET['value'], $_GET['userId']);
+                case "updateItem":
+                    $this->{$_GET['action']}($_GET['itemId'], $_GET['name'], $_GET['description'], $_GET['value']);
                     break;
 
             }
@@ -61,8 +61,6 @@ class Controller {
         $this->view->output($user);
         return $user;
     }
-
-    //TODO
     public function getUserByUsername($username) {
         $user = $this->model->getUserByUsername($username);
         $this->view->output($user);
@@ -140,10 +138,10 @@ class Controller {
         return $items;
     }
 
-    public function addItem($name, $description, $value, $userId) {
-        $newItem = $this->model->addItem($name, $description, $value, $userId);
-
+    public function addItem($name, $description, $value) {
         $userId = $_SESSION["UserId"];
+
+        $newItem = $this->model->addItem($name, $description, $value, $userId);
 
         $items = $this->model->getAllItemsByUser($userId);
         $this->view->output($items);
@@ -152,10 +150,10 @@ class Controller {
         return $items;
     }
 
-    public function updateItem($itemId, $name, $description, $value, $userId) {
-        $newItem = $this->model->updateItem($itemId, $name, $description, $value, $userId);
-
+    public function updateItem($itemId, $name, $description, $value) {
         $userId = $_SESSION["UserId"];
+
+        $newItem = $this->model->updateItem($itemId, $name, $description, $value, $userId);
 
         $items = $this->model->getAllItemsByUser($userId);
         $this->view->output($items);

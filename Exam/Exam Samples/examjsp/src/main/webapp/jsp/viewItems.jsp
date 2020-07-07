@@ -13,6 +13,7 @@
 <html>
 <head>
     <title>Items</title>
+    <link rel="stylesheet" type="text/css" href="../css/items.css">
     <script src="../lib/jquery-2.0.3.js"></script>
     <script lang="javascript">
         var counter = 0;
@@ -116,6 +117,7 @@
                             break;
                         case 3:
                             td.innerHTML = '<a href="http://localhost:8080/exam_jsp_war_exploded/jsp/detailsItemServlet?itemId=' + items[i].id + '">Edit</a>';
+                            break;
                     }
                 }
 

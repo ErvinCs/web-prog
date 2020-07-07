@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($user->getId() > -1) {
         $username = $user->getUsername();
         $password = $user->getPassword();
-        $id = $user->getId();
+        $id       = $user->getId();
 
         // Store session data
         $_SESSION["Loggedin"] = true;

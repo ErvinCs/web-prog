@@ -96,10 +96,7 @@ class DBUtils {
     }
 
     public function getNoItemsPerUser() {
-        $stmt = $this->pdo->query("SELECT users.user_id, users.username," +
-            "(SELECT COUNT(items.item_id) FROM items WHERE items.user_id = users.user_id) AS item_count," +
-            "(SELECT SUM(items.value) FROM items WHERE items.user_id = users.user_id) AS total_value" +
-            "FROM users");
+        $stmt = $this->pdo->query("SELECT users.user_id, users.username, (SELECT COUNT(items.item_id) FROM items WHERE items.user_id = users.user_id) AS item_count, (SELECT SUM(items.value) FROM items WHERE items.user_id = users.user_id) AS total_value FROM users");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
