@@ -50,10 +50,12 @@ public class UserController {
         this.users.add(user);
     }
 
+
     public void deleteUser(Long id) {
         logger.log(Level.INFO, "Delete User By Id: {}", id);
         this.users.delete(id);
     }
+
 
     public void updateUser(User user) {
         logger.log(Level.INFO, "Update User: {}", user);

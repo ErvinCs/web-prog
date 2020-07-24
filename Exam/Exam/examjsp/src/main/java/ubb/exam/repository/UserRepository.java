@@ -139,6 +139,7 @@ public class UserRepository implements IRepository<User> {
         }
     }
 
+
     @Override
     public void delete(Long id) {
         String sql = "DELETE FROM " + table_name + " WHERE user_id=?";
@@ -151,6 +152,7 @@ public class UserRepository implements IRepository<User> {
             ex.printStackTrace();
         }
     }
+
 
     @Override
     public void update(User user) {
